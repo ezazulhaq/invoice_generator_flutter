@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
-import 'package:invoice_generator/widgets/home/home.dart';
+import 'package:invoice_generator/screens/home.dart';
 
 void main() {
   runApp(

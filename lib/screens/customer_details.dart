@@ -37,7 +37,7 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
     } else {
       var dataJson = dataResponse.statusCode.toString();
       // ignore: avoid_print
-      print("Respose Failed");
+      print("Respose Failed - " + dataJson);
     }
 
     return dataStats;

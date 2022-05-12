@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:invoice_generator/screens/components/customer_data.dart';
 import 'package:invoice_generator/screens/customer_create.dart';
+import 'package:invoice_generator/screens/customer_update.dart';
 import 'package:invoice_generator/widgets/app_data.dart';
 import 'package:http/http.dart' as http;
 
@@ -125,7 +126,18 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
                             ),
                             onTap: () {
                               if (snapShot.data[index]['gstNo'] != "") {
-                                print(snapShot.data[index]['gstNo']);
+                                final refreshData = Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CustomerUpdateForm(
+                                      snapShot: snapShot.data[index],
+                                    ),
+                                  ),
+                                );
+
+                                if (refreshData != null) {
+                                  _refresh();
+                                }
                               }
                             },
                           );

@@ -19,7 +19,7 @@ class CustomerDetailsScreen extends StatefulWidget {
 }
 
 class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
-  String url = "http://localhost:8105/customer/get";
+  final url = kCustomerDetails;
 
   int stateCount = 0;
 
@@ -32,13 +32,12 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
       String dataResp = dataResponse.body;
 
       dataStats = jsonDecode(dataResp);
-      print(dataStats);
 
       stateCount = dataStats.length;
     } else {
       var dataJson = dataResponse.statusCode.toString();
       // ignore: avoid_print
-      print(dataJson);
+      print("Respose Failed");
     }
 
     return dataStats;

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:invoice_generator/widgets/app_button.dart';
 
 class CustomerUpdateForm extends StatefulWidget {
   const CustomerUpdateForm({
@@ -18,8 +19,6 @@ class CustomerUpdateForm extends StatefulWidget {
 }
 
 class _CustomerUpdateFormState extends State<CustomerUpdateForm> {
-  final url = kCustomerSave;
-
   final gstNo = TextEditingController();
   final customerName = TextEditingController();
   final address = TextEditingController();
@@ -49,11 +48,38 @@ class _CustomerUpdateFormState extends State<CustomerUpdateForm> {
     super.dispose();
   }
 
+  Future<void> _onClick() async {
+    Map<String, dynamic> body = {
+      "gstNo": gstNo.text,
+      "customerName": customerName.text,
+      "address": address.text,
+      "state": state.text,
+      "phoneNumber": phoneNum.text,
+      "pinCode": pinCode.text
+    };
+
+    String jsonBody = json.encode(body);
+
+    http.Response response = await http.post(
+      Uri.parse(kCustomerSave),
+      headers: kHeaders,
+      body: jsonBody,
+      encoding: kEncoding,
+    );
+
+    int statusCode = response.statusCode;
+    if (statusCode == 200) {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Customer Create"),
+        title: const Text(
+          "Customer Update",
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -132,49 +158,11 @@ class _CustomerUpdateFormState extends State<CustomerUpdateForm> {
                 const SizedBox(
                   height: kDefaultPadding,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    final uri = Uri.parse(url);
-                    final headers = {'Content-Type': 'application/json'};
-
-                    Map<String, dynamic> body = {
-                      "gstNo": gstNo.text,
-                      "customerName": customerName.text,
-                      "address": address.text,
-                      "state": state.text,
-                      "phoneNumber": phoneNum.text,
-                      "pinCode": pinCode.text
-                    };
-
-                    print(body);
-
-                    String jsonBody = json.encode(body);
-                    final encoding = Encoding.getByName('utf-8');
-
-                    http.Response response = await http.post(
-                      uri,
-                      headers: headers,
-                      body: jsonBody,
-                      encoding: encoding,
-                    );
-
-                    int statusCode = response.statusCode;
-                    if (statusCode == 200) {
-                      Navigator.pop(context, true);
-                    }
+                AppButton(
+                  onPressed: () {
+                    _onClick();
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding,
-                    ),
-                    child: Text(
-                      "Update",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
+                  buttonLable: "Update",
                 ),
               ],
             ),

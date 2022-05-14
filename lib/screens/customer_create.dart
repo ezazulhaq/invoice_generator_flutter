@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:invoice_generator/widgets/app_button.dart';
 
 class CustomerCreateForm extends StatefulWidget {
   const CustomerCreateForm({Key key}) : super(key: key);
@@ -13,8 +14,6 @@ class CustomerCreateForm extends StatefulWidget {
 }
 
 class _CustomerCreateFormState extends State<CustomerCreateForm> {
-  final url = kCustomerSave;
-
   final gstNo = TextEditingController();
   final customerName = TextEditingController();
   final address = TextEditingController();
@@ -36,6 +35,31 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
     phoneNum.dispose();
     pinCode.dispose();
     super.dispose();
+  }
+
+  Future<void> _onClick() async {
+    Map<String, dynamic> body = {
+      "gstNo": gstNo.text,
+      "customerName": customerName.text,
+      "address": address.text,
+      "state": state.text,
+      "phoneNumber": phoneNum.text,
+      "pinCode": pinCode.text
+    };
+
+    String jsonBody = json.encode(body);
+
+    http.Response response = await http.post(
+      Uri.parse(kCustomerSave),
+      headers: kHeaders,
+      body: jsonBody,
+      encoding: kEncoding,
+    );
+
+    int statusCode = response.statusCode;
+    if (statusCode == 200) {
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -120,47 +144,11 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
                 const SizedBox(
                   height: kDefaultPadding,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    final uri = Uri.parse(url);
-                    final headers = {'Content-Type': 'application/json'};
-
-                    Map<String, dynamic> body = {
-                      "gstNo": gstNo.text,
-                      "customerName": customerName.text,
-                      "address": address.text,
-                      "state": state.text,
-                      "phoneNumber": phoneNum.text,
-                      "pinCode": pinCode.text
-                    };
-
-                    String jsonBody = json.encode(body);
-                    final encoding = Encoding.getByName('utf-8');
-
-                    http.Response response = await http.post(
-                      uri,
-                      headers: headers,
-                      body: jsonBody,
-                      encoding: encoding,
-                    );
-
-                    int statusCode = response.statusCode;
-                    if (statusCode == 200) {
-                      Navigator.pop(context);
-                    }
+                AppButton(
+                  onPressed: () {
+                    _onClick();
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding,
-                    ),
-                    child: Text(
-                      "Save",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
+                  buttonLable: "Save",
                 ),
               ],
             ),

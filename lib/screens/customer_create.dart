@@ -1,9 +1,7 @@
 // @dart=2.9
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
-import 'package:http/http.dart' as http;
+import 'package:invoice_generator/services/customer_services.dart';
 
 class CustomerCreateForm extends StatefulWidget {
   const CustomerCreateForm({Key key}) : super(key: key);
@@ -14,6 +12,7 @@ class CustomerCreateForm extends StatefulWidget {
 
 class _CustomerCreateFormState extends State<CustomerCreateForm> {
   final url = kCustomerSave;
+  CustomerServices customerServices;
 
   final gstNo = TextEditingController();
   final customerName = TextEditingController();
@@ -122,9 +121,6 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    final uri = Uri.parse(url);
-                    final headers = {'Content-Type': 'application/json'};
-
                     Map<String, dynamic> body = {
                       "gstNo": gstNo.text,
                       "customerName": customerName.text,
@@ -133,21 +129,8 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
                       "phoneNumber": phoneNum.text,
                       "pinCode": pinCode.text
                     };
-
-                    String jsonBody = json.encode(body);
-                    final encoding = Encoding.getByName('utf-8');
-
-                    http.Response response = await http.post(
-                      uri,
-                      headers: headers,
-                      body: jsonBody,
-                      encoding: encoding,
-                    );
-
-                    int statusCode = response.statusCode;
-                    if (statusCode == 200) {
-                      Navigator.pop(context);
-                    }
+                    await customerServices.saveUpdateCustomer(
+                        context, kCustomerSave, kHeaders, body, kEncoding);
                   },
                   child: const Padding(
                     padding: EdgeInsets.symmetric(

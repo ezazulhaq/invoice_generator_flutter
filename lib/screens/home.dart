@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:invoice_generator/screens/customer_details.dart';
+import 'package:invoice_generator/screens/product_details.dart';
 import 'package:invoice_generator/widgets/nav_links.dart';
 
 class InvoiceHome extends StatelessWidget {
@@ -44,7 +45,12 @@ class InvoiceHome extends StatelessWidget {
               NavLinks(
                 linkName: "Product Details",
                 navigateTo: () {
-                  print("Product Details");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProductDetailsScreen(),
+                    ),
+                  );
                 },
               ),
             ],

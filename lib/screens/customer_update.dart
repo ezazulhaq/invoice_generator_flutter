@@ -79,6 +79,21 @@ class _CustomerUpdateFormState extends State<CustomerUpdateForm> {
     }
   }
 
+  Future<void> _onClickDelete() async {
+    String url = kCustomerRemove + gstNo.text;
+    http.Response response = await http.get(
+      Uri.parse(url),
+    );
+
+    int statusCode = response.statusCode;
+    if (statusCode == 200) {
+      Navigator.popAndPushNamed(
+        context,
+        CustomerDetailsScreen.id,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,6 +184,16 @@ class _CustomerUpdateFormState extends State<CustomerUpdateForm> {
                     _onClick();
                   },
                   buttonLable: "Update",
+                ),
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+                AppButton(
+                  onPressed: () {
+                    _onClickDelete();
+                  },
+                  buttonLable: "Delete",
+                  color: Colors.redAccent,
                 ),
               ],
             ),

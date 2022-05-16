@@ -68,6 +68,21 @@ class _ProductUpdateFormState extends State<ProductUpdateForm> {
     }
   }
 
+  Future<void> _onClickDelete() async {
+    String url = kProductRemove + widget.snapShot['id'].toString();
+    http.Response response = await http.get(
+      Uri.parse(url),
+    );
+
+    int statusCode = response.statusCode;
+    if (statusCode == 200) {
+      Navigator.popAndPushNamed(
+        context,
+        ProductDetailsScreen.id,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,6 +137,16 @@ class _ProductUpdateFormState extends State<ProductUpdateForm> {
                     _onClick();
                   },
                   buttonLable: "Update",
+                ),
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+                AppButton(
+                  onPressed: () {
+                    _onClickDelete();
+                  },
+                  buttonLable: "Delete",
+                  color: Colors.redAccent,
                 ),
               ],
             ),

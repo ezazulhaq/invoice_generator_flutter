@@ -4,10 +4,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:invoice_generator/constants.dart';
+import 'package:invoice_generator/screens/product_details.dart';
 import 'package:invoice_generator/widgets/app_button.dart';
 
 class ProductCreateForm extends StatefulWidget {
-  const ProductCreateForm({Key key}) : super(key: key);
+  const ProductCreateForm({
+    Key key,
+  }) : super(key: key);
+
+  static String id = "product_create";
 
   @override
   State<ProductCreateForm> createState() => _ProductCreateFormState();
@@ -49,7 +54,10 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
 
     int statusCode = response.statusCode;
     if (statusCode == 200) {
-      Navigator.pop(context);
+      Navigator.popAndPushNamed(
+        context,
+        ProductDetailsScreen.id,
+      );
     }
   }
 

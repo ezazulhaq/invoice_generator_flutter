@@ -6,6 +6,7 @@ import 'package:invoice_generator/constants.dart';
 import 'package:invoice_generator/screens/components/customer_data.dart';
 import 'package:invoice_generator/screens/customer_create.dart';
 import 'package:invoice_generator/screens/customer_update.dart';
+import 'package:invoice_generator/screens/home.dart';
 import 'package:invoice_generator/widgets/app_data.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,6 +14,8 @@ class CustomerDetailsScreen extends StatefulWidget {
   const CustomerDetailsScreen({
     Key key,
   }) : super(key: key);
+
+  static String id = "customer_details";
 
   @override
   State<CustomerDetailsScreen> createState() => _CustomerDetailsScreenState();
@@ -63,6 +66,18 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.home,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.popAndPushNamed(
+              context,
+              InvoiceHome.id,
+            );
+          },
+        ),
         title: const Text(
           "Customer Dashboard",
         ),
@@ -152,11 +167,9 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
+          Navigator.popAndPushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) => const CustomerCreateForm(),
-            ),
+            CustomerCreateForm.id,
           );
         },
         child: const Icon(

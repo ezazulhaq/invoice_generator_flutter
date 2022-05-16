@@ -10,6 +10,8 @@ class InvoiceHome extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
+  static String id = "invoice_home";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +33,9 @@ class InvoiceHome extends StatelessWidget {
               NavLinks(
                 linkName: "Customer Details",
                 navigateTo: () {
-                  Navigator.push(
+                  Navigator.popAndPushNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const CustomerDetailsScreen(),
-                    ),
+                    CustomerDetailsScreen.id,
                   );
                 },
               ),

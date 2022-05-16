@@ -4,10 +4,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:invoice_generator/screens/customer_details.dart';
 import 'package:invoice_generator/widgets/app_button.dart';
 
 class CustomerCreateForm extends StatefulWidget {
-  const CustomerCreateForm({Key key}) : super(key: key);
+  const CustomerCreateForm({
+    Key key,
+  }) : super(key: key);
+
+  static String id = "customer_create";
 
   @override
   State<CustomerCreateForm> createState() => _CustomerCreateFormState();
@@ -58,7 +63,10 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
 
     int statusCode = response.statusCode;
     if (statusCode == 200) {
-      Navigator.pop(context);
+      Navigator.popAndPushNamed(
+        context,
+        CustomerDetailsScreen.id,
+      );
     }
   }
 

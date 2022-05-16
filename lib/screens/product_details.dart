@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:invoice_generator/constants.dart';
 import 'package:invoice_generator/screens/components/product_data.dart';
+import 'package:invoice_generator/screens/home.dart';
 import 'package:invoice_generator/screens/product_create.dart';
 import 'package:invoice_generator/screens/product_update.dart';
 import 'package:invoice_generator/widgets/app_data.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({Key key}) : super(key: key);
+  const ProductDetailsScreen({
+    Key key,
+  }) : super(key: key);
+
+  static String id = "product_details";
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -59,6 +64,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.home,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.popAndPushNamed(
+              context,
+              InvoiceHome.id,
+            );
+          },
+        ),
         title: const Text(
           "Product Dashboard",
         ),
@@ -148,11 +165,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
+          Navigator.popAndPushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) => const ProductCreateForm(),
-            ),
+            ProductCreateForm.id,
           );
         },
         child: const Icon(

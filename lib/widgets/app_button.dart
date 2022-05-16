@@ -7,10 +7,12 @@ class AppButton extends StatelessWidget {
     Key key,
     @required this.onPressed,
     @required this.buttonLable,
+    this.color,
   }) : super(key: key);
 
   final Function onPressed;
   final String buttonLable;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,9 @@ class AppButton extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+      ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(color),
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:invoice_generator/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:invoice_generator/screens/components/invoice_data.dart';
 import 'package:invoice_generator/screens/home.dart';
+import 'package:invoice_generator/screens/invoice_create.dart';
 import 'package:invoice_generator/widgets/app_data.dart';
 
 class InvoiceDetailsScreen extends StatefulWidget {
@@ -159,7 +160,12 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.popAndPushNamed(
+            context,
+            InvoiceCreateForm.id,
+          );
+        },
         child: const Icon(
           Icons.add,
         ),

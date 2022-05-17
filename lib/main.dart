@@ -7,6 +7,7 @@ import 'package:invoice_generator/screens/customer_create.dart';
 import 'package:invoice_generator/screens/customer_details.dart';
 import 'package:invoice_generator/screens/customer_update.dart';
 import 'package:invoice_generator/screens/home.dart';
+import 'package:invoice_generator/screens/invoice_create.dart';
 import 'package:invoice_generator/screens/invoice_details.dart';
 import 'package:invoice_generator/screens/product_create.dart';
 import 'package:invoice_generator/screens/product_details.dart';
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
         InvoiceHome.id: (BuildContext context) => const InvoiceHome(),
         InvoiceDetailsScreen.id: (BuildContext context) =>
             const InvoiceDetailsScreen(),
+        InvoiceCreateForm.id: (BuildContext context) =>
+            const InvoiceCreateForm(),
         CustomerDetailsScreen.id: (BuildContext context) =>
             const CustomerDetailsScreen(),
         CustomerCreateForm.id: (BuildContext context) =>

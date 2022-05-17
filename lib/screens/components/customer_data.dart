@@ -30,10 +30,11 @@ class CustomerData extends StatelessWidget {
             dataLabel: customerName,
             fontWeight: FontWeight.w500,
           ),
-          AppData(
-            dataLabel: address,
-            fontWeight: FontWeight.w500,
-          ),
+          if (address != null)
+            AppData(
+              dataLabel: address,
+              fontWeight: FontWeight.w500,
+            ),
         ],
       ),
     );

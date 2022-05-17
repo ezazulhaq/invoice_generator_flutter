@@ -21,3 +21,4 @@ const kProductRemove = "http://10.0.2.2:8105/product/remove/";
 
 const kInvoiceDetails = "http://10.0.2.2:8105/invoice/get";
 const kInvoiceSave = "http://10.0.2.2:8105/invoice/save";
+const kInvoiceFromId = "http://10.0.2.2:8105/invoice/get/";

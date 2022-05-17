@@ -18,3 +18,5 @@ const kCustomerRemove = "http://10.0.2.2:8105/customer/remove/";
 const kProductDetails = "http://10.0.2.2:8105/product/get";
 const kProductSave = "http://10.0.2.2:8105/product/save";
 const kProductRemove = "http://10.0.2.2:8105/product/remove/";
+
+const kInvoiceDetails = "http://10.0.2.2:8105/invoice/get";

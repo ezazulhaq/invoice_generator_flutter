@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:invoice_generator/screens/customer_details.dart';
+import 'package:invoice_generator/screens/invoice_details.dart';
 import 'package:invoice_generator/screens/product_details.dart';
 import 'package:invoice_generator/widgets/nav_links.dart';
 
@@ -24,7 +25,10 @@ class InvoiceHome extends StatelessWidget {
               NavLinks(
                 linkName: "Invoice Details",
                 navigateTo: () {
-                  print("Invoice Details");
+                  Navigator.popAndPushNamed(
+                    context,
+                    InvoiceDetailsScreen.id,
+                  );
                 },
               ),
               const SizedBox(

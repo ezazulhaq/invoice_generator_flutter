@@ -74,6 +74,18 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.popAndPushNamed(
+              context,
+              CustomerDetailsScreen.id,
+            );
+          },
+        ),
         title: const Text("Customer Create"),
       ),
       body: SafeArea(

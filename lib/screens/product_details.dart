@@ -25,7 +25,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int stateCount = 0;
 
   Future<List<dynamic>> getProductDetails(String url) async {
-    http.Response dataResponse = await http.get(url);
+    http.Response dataResponse = await http.get(Uri.parse(url));
 
     List<dynamic> dataStats;
 

@@ -27,7 +27,7 @@ class _InvoiceCreateFormState extends State<InvoiceCreateForm> {
   int stateCount = 0;
 
   Future<List<dynamic>> getCustomerDetails(String url) async {
-    http.Response dataResponse = await http.get(url);
+    http.Response dataResponse = await http.get(Uri.parse(url));
 
     List<dynamic> dataStats;
 

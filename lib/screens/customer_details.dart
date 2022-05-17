@@ -27,7 +27,10 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
   int stateCount = 0;
 
   Future<List<dynamic>> getCustomerDetails(String url) async {
-    http.Response dataResponse = await http.get(url);
+    http.Response dataResponse = await http.get(
+      Uri.parse(url),
+      headers: {"Access-Control-Allow-Origin": "*"},
+    );
 
     List<dynamic> dataStats;
 

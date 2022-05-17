@@ -28,7 +28,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   int stateCount = 0;
 
   Future<List<dynamic>> getInvoiceDetails(String url) async {
-    http.Response dataResponse = await http.get(url);
+    http.Response dataResponse = await http.get(Uri.parse(url));
 
     List<dynamic> dataStats;
 

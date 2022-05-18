@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
+import 'package:invoice_generator/controller/invoice_notifier.dart';
 import 'package:invoice_generator/screens/customer_create.dart';
 import 'package:invoice_generator/screens/customer_details.dart';
 import 'package:invoice_generator/screens/customer_update.dart';
@@ -12,10 +13,16 @@ import 'package:invoice_generator/screens/invoice_details.dart';
 import 'package:invoice_generator/screens/product_create.dart';
 import 'package:invoice_generator/screens/product_details.dart';
 import 'package:invoice_generator/screens/product_update.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => InvoiceNotifier()),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 

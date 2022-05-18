@@ -5,10 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:invoice_generator/controller/invoice_notifier.dart';
 import 'package:invoice_generator/screens/components/customer_data.dart';
+import 'package:invoice_generator/screens/goods_add.dart';
 import 'package:invoice_generator/screens/invoice_details.dart';
 import 'package:invoice_generator/widgets/app_button.dart';
 import 'package:invoice_generator/widgets/app_data.dart';
+import 'package:provider/provider.dart';
 
 class InvoiceUpdateForm extends StatefulWidget {
   const InvoiceUpdateForm({
@@ -58,11 +61,11 @@ class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
     });
   }
 
-  Future<List<dynamic>> _getInvoiceFromId(String url) async {
+  Future<dynamic> _getInvoiceFromId(String url) async {
     http.Response dataResponse =
         await http.get(Uri.parse(url + invoiceId.text.toString()));
 
-    List<dynamic> dataStats;
+    dynamic dataStats;
 
     if (dataResponse.statusCode == 200) {
       String dataResp = dataResponse.body;
@@ -363,6 +366,23 @@ class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        elevation: 5,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GoodsAddForm(
+                invoiceId: invoiceId.text,
+              ),
+            ),
+          );
+        },
+        child: const Icon(
+          Icons.add,
+        ),
+        backgroundColor: Colors.redAccent,
       ),
     );
   }

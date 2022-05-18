@@ -24,3 +24,4 @@ const kInvoiceSave = "http://10.0.2.2:8105/invoice/save";
 const kInvoiceFromId = "http://10.0.2.2:8105/invoice/get/";
 
 const kGoodSave = "http://10.0.2.2:8105/good/save";
+const kGoodFromInvoiceId = "http://10.0.2.2:8105/good/get/invoice/";

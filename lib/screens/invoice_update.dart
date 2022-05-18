@@ -5,13 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:invoice_generator/controller/invoice_notifier.dart';
 import 'package:invoice_generator/screens/components/customer_data.dart';
+import 'package:invoice_generator/screens/components/good_data.dart';
 import 'package:invoice_generator/screens/goods_add.dart';
 import 'package:invoice_generator/screens/invoice_details.dart';
 import 'package:invoice_generator/widgets/app_button.dart';
 import 'package:invoice_generator/widgets/app_data.dart';
-import 'package:provider/provider.dart';
 
 class InvoiceUpdateForm extends StatefulWidget {
   const InvoiceUpdateForm({
@@ -29,6 +28,7 @@ class InvoiceUpdateForm extends StatefulWidget {
 
 class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
   int stateCount = 0;
+  int goodCount = 0;
 
   Future<List<dynamic>> _getCustomerDetails(String url) async {
     http.Response dataResponse = await http.get(Uri.parse(url));
@@ -61,9 +61,8 @@ class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
     });
   }
 
-  Future<dynamic> _getInvoiceFromId(String url) async {
-    http.Response dataResponse =
-        await http.get(Uri.parse(url + invoiceId.text.toString()));
+  Future<dynamic> _getGoodsFromInvoiceId(String url) async {
+    http.Response dataResponse = await http.get(Uri.parse(url));
 
     dynamic dataStats;
 
@@ -72,7 +71,16 @@ class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
 
       dataStats = jsonDecode(dataResp);
 
-      stateCount = dataStats.length;
+      goodCount = dataStats.length;
+      double totalAmt = 0.0;
+
+      for (var i = 0; i < goodCount; i++) {
+        totalAmt = totalAmt + double.parse(dataStats[i]["amount"]);
+      }
+
+      total.text = totalAmt.toString();
+      cgstAmt.text = (totalAmt * double.parse(cgst.text) / 100).toString();
+      sgstAmt.text = (totalAmt * double.parse(sgst.text) / 100).toString();
     } else {
       var dataJson = dataResponse.statusCode.toString();
       if (kDebugMode) {
@@ -120,7 +128,7 @@ class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
     grandTotal.text = widget.snapShot['grandTotal'].toString();
     amountInWords.text = widget.snapShot['amountInWords'];
     _getCustomerDetails(kCustomerDetails);
-    _getInvoiceFromId(kInvoiceFromId);
+    _getGoodsFromInvoiceId(kGoodFromInvoiceId + invoiceId.text);
   }
 
   @override
@@ -253,6 +261,97 @@ class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
                 const SizedBox(
                   height: kDefaultPadding,
                 ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(kDefaultPadding / 2),
+                    color: const Color.fromARGB(255, 209, 204, 204),
+                  ),
+                  child: FutureBuilder(
+                    future: _getGoodsFromInvoiceId(
+                        kGoodFromInvoiceId + invoiceId.text),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapShot) {
+                      if (snapShot.connectionState == ConnectionState.none &&
+                          snapShot.hasData == null) {
+                        return Container();
+                      } else {
+                        return SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: kDefaultPadding,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      AppData(
+                                        dataLabel: "Particular Name",
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      AppData(
+                                        dataLabel: "HSN Code",
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      AppData(
+                                        dataLabel: "Rate",
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      AppData(
+                                        dataLabel: "Qty.",
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      AppData(
+                                        dataLabel: "Amt(Rs.)",
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Divider(),
+                                ListView.separated(
+                                  itemCount: goodCount,
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  controller: ScrollController(),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      child: GoodData(
+                                        particular: snapShot.data[index]
+                                            ['particulars'],
+                                        hsnCode: snapShot.data[index]
+                                            ['hsnCode'],
+                                        rate: snapShot.data[index]['rate'],
+                                        quantity: snapShot.data[index]['kgs'],
+                                        amount: snapShot.data[index]['amount'],
+                                      ),
+                                      onTap: () {
+                                        if (snapShot.data[index]['id'] != "") {}
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
                 TextField(
                   controller: total,
                   readOnly: true,
@@ -345,7 +444,11 @@ class _InvoiceUpdateFormState extends State<InvoiceUpdateForm> {
                       double varTotal = double.parse(total.text);
                       double varCgst = double.parse(cgst.text);
                       double varSgst = double.parse(sgst.text);
-                      grandTotal.text = ((varTotal * varCgst) / 100 +
+
+                      cgstAmt.text = ((varTotal * varCgst) / 100).toString();
+                      sgstAmt.text = ((varTotal * varSgst) / 100).toString();
+                      grandTotal.text = (varTotal +
+                              (varTotal * varCgst) / 100 +
                               (varTotal * varSgst) / 100)
                           .toString();
                     });

@@ -41,7 +41,6 @@ class _GoodsAddFormState extends State<GoodsAddForm> {
     invoiceID.text = widget.invoiceId;
 
     _getInvoiceFromId(kInvoiceFromId + invoiceID.text);
-    _getProductDetails(kProductDetails);
   }
 
   @override
@@ -57,38 +56,46 @@ class _GoodsAddFormState extends State<GoodsAddForm> {
   }
 
   Future<void> _getInvoiceFromId(String url) async {
-    http.Response dataResponse = await http.get(Uri.parse(url));
+    var client = http.Client();
+    try {
+      var dataResponse = await client.get(Uri.parse(url));
 
-    if (dataResponse.statusCode == 200) {
-      String dataResp = dataResponse.body;
+      if (dataResponse.statusCode == 200) {
+        String dataResp = dataResponse.body;
 
-      mapInvoice = await jsonDecode(dataResp);
-    } else {
-      var dataJson = dataResponse.statusCode.toString();
-      if (kDebugMode) {
-        print("Respose Failed - " + dataJson);
+        mapInvoice = jsonDecode(dataResp);
+      } else {
+        var dataJson = dataResponse.statusCode.toString();
+        if (kDebugMode) {
+          print("Respose Failed - " + dataJson);
+        }
       }
+    } finally {
+      client.close();
     }
   }
 
   int stateCount = 0;
 
   Future<List<dynamic>> _getProductDetails(String url) async {
-    http.Response dataResponse = await http.get(Uri.parse(url));
-
+    var client = http.Client();
     List<dynamic> dataStats;
 
-    if (dataResponse.statusCode == 200) {
-      String dataResp = dataResponse.body;
+    try {
+      var dataResponse = await client.get(Uri.parse(url));
 
-      dataStats = jsonDecode(dataResp);
-
-      stateCount = dataStats.length;
-    } else {
-      var dataJson = dataResponse.statusCode.toString();
-      if (kDebugMode) {
-        print("Respose Failed - " + dataJson);
+      if (dataResponse.statusCode == 200) {
+        String dataResp = dataResponse.body;
+        dataStats = jsonDecode(dataResp);
+        stateCount = dataStats.length;
+      } else {
+        var dataJson = dataResponse.statusCode.toString();
+        if (kDebugMode) {
+          print("Respose Failed - " + dataJson);
+        }
       }
+    } finally {
+      client.close();
     }
 
     return dataStats;
@@ -117,27 +124,32 @@ class _GoodsAddFormState extends State<GoodsAddForm> {
       "amount": amount.text
     };
 
-    print("Map Details - " + body.toString());
+    if (kDebugMode) {
+      print("Map Details - " + body.toString());
+    }
 
     String jsonBody = jsonEncode(body);
-
-    http.Response response = await http.post(
-      Uri.parse(kGoodSave),
-      headers: kHeaders,
-      body: jsonBody,
-      encoding: kEncoding,
-    );
-
-    int statusCode = response.statusCode;
-    if (statusCode == 200) {
-      Navigator.pop(
-        context,
-        MaterialPageRoute(
-          builder: (context) => InvoiceUpdateForm(
-            snapShot: mapInvoice,
-          ),
-        ),
+    var client = http.Client();
+    try {
+      var response = await client.post(
+        Uri.parse(kGoodSave),
+        headers: kHeaders,
+        body: jsonBody,
+        encoding: kEncoding,
       );
+
+      if (response.statusCode == 200) {
+        Navigator.pop(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InvoiceUpdateForm(
+              snapShot: mapInvoice,
+            ),
+          ),
+        );
+      }
+    } finally {
+      client.close();
     }
   }
 

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "597723734137",
+    "project_id": "invoice-generator-e262f",
+    "storage_bucket": "invoice-generator-e262f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597723734137:android:0ddfda7d7385dffd0c74a8",
+        "android_client_info": {
+          "package_name": "com.example.invoice_generator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597723734137-8667bjapbudhgfglgm82ab82jlfvhobn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhV4RmD5ZvjSufBAlHxjNX6AsjqtT87AE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "597723734137-8667bjapbudhgfglgm82ab82jlfvhobn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

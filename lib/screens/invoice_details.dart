@@ -28,21 +28,26 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   int stateCount = 0;
 
   Future<List<dynamic>> getInvoiceDetails(String url) async {
-    http.Response dataResponse = await http.get(Uri.parse(url));
-
+    var client = http.Client();
     List<dynamic> dataStats;
 
-    if (dataResponse.statusCode == 200) {
-      String dataResp = dataResponse.body;
+    try {
+      http.Response dataResponse = await client.get(Uri.parse(url));
 
-      dataStats = jsonDecode(dataResp);
+      if (dataResponse.statusCode == 200) {
+        String dataResp = dataResponse.body;
 
-      stateCount = dataStats.length;
-    } else {
-      var dataJson = dataResponse.statusCode.toString();
-      if (kDebugMode) {
-        print("Respose Failed - " + dataJson);
+        dataStats = jsonDecode(dataResp);
+
+        stateCount = dataStats.length;
+      } else {
+        var dataJson = dataResponse.statusCode.toString();
+        if (kDebugMode) {
+          print("Respose Failed - " + dataJson);
+        }
       }
+    } finally {
+      client.close();
     }
 
     return dataStats;

@@ -8,7 +8,11 @@ const kTextLightColor = Color(0xFFACACAC);
 
 const kDefaultPadding = 20.0;
 
-Map<String, String> kHeaders = {'Content-Type': 'application/json'};
+Map<String, String> kHeaders = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': 'true'
+};
 Encoding kEncoding = Encoding.getByName('utf-8');
 
 const kCustomerDetails = "http://10.0.2.2:8105/customer/get";
